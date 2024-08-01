@@ -28,6 +28,13 @@
             </div>
             <button id="next-btn" style="display: none;" onclick="nextQuestion()">Next</button>
         </div>
+        <div id="completion-screen" style="display: none;">
+            <h1>Level Completed!</h1>
+            <p id="completion-message"></p>
+            <button class="nav-btn" onclick="moveToNextLevel()">Next Level</button>
+            <button class="nav-btn" onclick="restartLevel()">Restart Level</button>
+            <button class="nav-btn" onclick="goToStart()">Back to Start</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

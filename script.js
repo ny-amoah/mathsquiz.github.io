@@ -16,6 +16,7 @@ function startQuiz(level) {
     questionCount = 0;
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('quiz-screen').style.display = 'block';
+    document.getElementById('completion-screen').style.display = 'none';
     document.getElementById('level-label').innerText = `Level: ${currentLevel}`;
     document.getElementById('score-label').innerText = `Score: ${score}`;
     nextQuestion();
@@ -23,9 +24,9 @@ function startQuiz(level) {
 
 function generateQuestion() {
     const operations = ['+', '-', '*', '/'];
-    const num1 = Math.floor(Math.random() * levels[currentLevel]) + 1;
-    const num2 = Math.floor(Math.random() * levels[currentLevel]) + 1;
-    const operation = operations[Math.floor(Math.random() * operations.length)];
+    let num1 = Math.floor(Math.random() * levels[currentLevel]) + 1;
+    let num2 = Math.floor(Math.random() * levels[currentLevel]) + 1;
+    let operation = operations[Math.floor(Math.random() * operations.length)];
 
     let question;
     if (operation === '+') {
@@ -38,13 +39,17 @@ function generateQuestion() {
         correctAnswer = num1 * num2;
         question = `${num1} * ${num2}`;
     } else if (operation === '/') {
+        while (num1 % num2 !== 0) {
+            num1 = Math.floor(Math.random() * levels[currentLevel]) + 1;
+            num2 = Math.floor(Math.random() * levels[currentLevel]) + 1;
+        }
         correctAnswer = num1 / num2;
-        question = `${num1 * num2} / ${num1}`;
+        question = `${num1} / ${num2}`;
     }
 
     const answers = [correctAnswer];
     while (answers.length < 4) {
-        const wrongAnswer = correctAnswer + Math.floor(Math.random() * 7) - 3;
+        let wrongAnswer = correctAnswer + Math.floor(Math.random() * 7) - 3;
         if (wrongAnswer > 0 && !answers.includes(wrongAnswer)) {
             answers.push(wrongAnswer);
         }
@@ -56,17 +61,7 @@ function generateQuestion() {
 
 function nextQuestion() {
     if (questionCount >= questionsPerLevel) {
-        if (currentLevel === 'Easy') {
-            currentLevel = 'Medium';
-        } else if (currentLevel === 'Medium') {
-            currentLevel = 'Hard';
-        } else {
-            alert(`Congratulations! You completed all levels with a score of ${score}.`);
-            window.location.reload();
-            return;
-        }
-        alert(`Level Up! You are now on ${currentLevel} level.`);
-        startQuiz(currentLevel);
+        showCompletionScreen();
         return;
     }
 
@@ -98,4 +93,33 @@ function checkAnswer(index) {
     answerButtons.forEach(button => button.disabled = true);
     document.getElementById('score-label').innerText = `Score: ${score}`;
     document.getElementById('next-btn').style.display = 'block';
+}
+
+function showCompletionScreen() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('completion-screen').style.display = 'block';
+    document.getElementById('completion-message').innerText = `You completed the ${currentLevel} level with a score of ${score}.`;
+}
+
+function moveToNextLevel() {
+    if (currentLevel === 'Easy') {
+        currentLevel = 'Medium';
+    } else if (currentLevel === 'Medium') {
+        currentLevel = 'Hard';
+    } else {
+        alert(`Congratulations! You completed all levels with a score of ${score}.`);
+        window.location.reload();
+        return;
+    }
+    startQuiz(currentLevel);
+}
+
+function restartLevel() {
+    startQuiz(currentLevel);
+}
+
+function goToStart() {
+    document.getElementById('start-screen').style.display = 'block';
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('completion-screen').style.display = 'none';
 }

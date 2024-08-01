@@ -21,7 +21,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-.level-btn, .answer-btn, #next-btn {
+.level-btn, .answer-btn, .nav-btn, #next-btn {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
@@ -33,7 +33,7 @@ h1 {
     cursor: pointer;
 }
 
-.level-btn:hover, .answer-btn:hover, #next-btn:hover {
+.level-btn:hover, .answer-btn:hover, .nav-btn:hover, #next-btn:hover {
     background: #2980b9;
 }
 
